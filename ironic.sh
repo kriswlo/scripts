@@ -14,3 +14,8 @@ eval update-grub-legacy-ec2 $l
 eval apt update $l
 eval apt upgrade $l
 eval apt install mysql-server ironic-api ironic-conductor python-ironicclient -y $l
+date | md5sum | cut -c 1-12 > /root/.mysql_password
+echo "CREATE DATABASE ironic CHARACTER SET utf8;
+GRANT ALL PRIVILEGES ON ironic.* TO 'ironic'@'localhost' IDENTIFIED BY '$(cat /root/.mysql_password)';
+GRANT ALL PRIVILEGES ON ironic.* TO 'ironic'@'%' IDENTIFIED BY '$(cat /root/.mysql_password)';" >/root/mysql_config.sqlievi
+eval mysql -u root < /root/mysql_config.sql $l
