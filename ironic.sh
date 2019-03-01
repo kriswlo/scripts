@@ -11,12 +11,14 @@ eval chmod 600 /root/.ssh $l
 eval chmod 400 /root/.ssh/authorized_keys $l
 sed -i "s/# groot=LABEL=cloudimg-rootfs/# groot=(hd0)/g" /boot/grub/menu.lst
 eval update-grub-legacy-ec2 $l
-eval apt update $l
-eval apt upgrade -y $l
+export DEBIAN_FRONTEND=noninteractive
+export DEBIAN_PRIORITY=critical
+sudo -E apt-get -qy update
+sudo -E apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+sudo -E apt-get -qy autoclean
 eval apt install mysql-server ironic-api ironic-conductor python-ironicclient -y $l
 date | md5sum | cut -c 1-12 > /root/.mysql_password
-exit
 echo "CREATE DATABASE ironic CHARACTER SET utf8;
 GRANT ALL PRIVILEGES ON ironic.* TO 'ironic'@'localhost' IDENTIFIED BY '$(cat /root/.mysql_password)';
-GRANT ALL PRIVILEGES ON ironic.* TO 'ironic'@'%' IDENTIFIED BY '$(cat /root/.mysql_password)';" >/root/mysql_config.sqlievi
+GRANT ALL PRIVILEGES ON ironic.* TO 'ironic'@'%' IDENTIFIED BY '$(cat /root/.mysql_password)';" >/root/mysql_config.sql
 eval mysql -u root < /root/mysql_config.sql $l
