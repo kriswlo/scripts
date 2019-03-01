@@ -12,7 +12,7 @@ eval chmod 400 /root/.ssh/authorized_keys $l
 sed -i "s/# groot=LABEL=cloudimg-rootfs/# groot=(hd0)/g" /boot/grub/menu.lst
 eval update-grub-legacy-ec2 $l
 eval apt update $l
-eval apt upgrade $l
+eval apt upgrade -y $l
 eval apt install mysql-server ironic-api ironic-conductor python-ironicclient -y $l
 date | md5sum | cut -c 1-12 > /root/.mysql_password
 exit
