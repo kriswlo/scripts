@@ -16,12 +16,13 @@ export DEBIAN_PRIORITY=critical
 sudo -E apt-get -qy update
 sudo -E apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
 sudo -E apt-get -qy autoclean
-echo '#!/bin/bash
-/root/rc.firewall
+eval echo '#!/bin/bash $l
+touch /root/rc.firewall
 sudo -E apt-get -qy update
-sudo -E apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+apt upgrade -y
 sudo -E apt-get -qy autoclean
 apt install python-pip -y
 pip install -U pip ansible bifrost' > /etc/rc.local
 chmod 755 /etc/rc.local
 systemctl enable rc-local
+eval echo 'End' $l
