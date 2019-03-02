@@ -16,13 +16,20 @@ export DEBIAN_PRIORITY=critical
 eval apt-get -qy update $l
 eval apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade $l
 eval apt-get -qy autoclean $l
-eval echo '#!/bin/bash
-touch /root/rc.firewall
+echo 'iptables -P INPUT DROP
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -s 80.68.235.230 -j ACCEPT
+iptables -A INPUT -s 10.180.0.0/22 -j ACCEPT' >/root/rc.firewall
+chmod 755 /root/rc.firewall
+echo '#!/bin/bash
+/root/rc.firewall
 sudo -E apt-get -qy update
 apt upgrade -y
 sudo -E apt-get -qy autoclean
 apt install python-pip -y
-pip install -U pip ansible bifrost' > /etc/rc.local $l
+pip install -U pip ansible bifrost
+head -n 2 /etc/rc.local >/etc/rc.local' > /etc/rc.local
 chmod 755 /etc/rc.local
 systemctl enable rc-local
 eval echo 'End' $l
