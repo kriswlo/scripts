@@ -16,3 +16,7 @@ export DEBIAN_PRIORITY=critical
 sudo -E apt-get -qy update
 sudo -E apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
 sudo -E apt-get -qy autoclean
+sudo -E apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+sudo -E apt-get -qy autoclean
+apt install python-pip -y
+pip install -U pip ansible bifrost
