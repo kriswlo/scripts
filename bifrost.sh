@@ -11,25 +11,35 @@ eval chmod 600 /root/.ssh $l
 eval chmod 400 /root/.ssh/authorized_keys $l
 sed -i "s/# groot=LABEL=cloudimg-rootfs/# groot=(hd0)/g" /boot/grub/menu.lst
 eval update-grub-legacy-ec2 $l
+eval echo "before export" $l
 export DEBIAN_FRONTEND=noninteractive
 export DEBIAN_PRIORITY=critical
+eval echo "before update" $l
 eval apt-get -qy update $l
+eval echo "before upgrade" $l
 eval apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade $l
+eval echo "before autoclean" $l
 eval apt-get -qy autoclean $l
-echo 'iptables -P INPUT DROP
+eval echo "before firewall" $l
+echo '#!/bin/bash
+iptables -F
+iptables -P INPUT DROP
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 iptables -A INPUT -s 80.68.235.230 -j ACCEPT
 iptables -A INPUT -s 10.180.0.0/22 -j ACCEPT' >/root/rc.firewall
 chmod 755 /root/rc.firewall
+eval echo "before rc.local" $l
 echo '#!/bin/bash
 /root/rc.firewall
 sudo -E apt-get -qy update
 apt upgrade -y
 sudo -E apt-get -qy autoclean
 apt install python-pip -y
-pip install -U pip ansible bifrost
-head -n 2 /etc/rc.local >/etc/rc.local' > /etc/rc.local
+pip install -U pip ansible softlayer bifrost
+head -n 2 /etc/rc.local >/etc/rc.local1
+mv /etc/rc.local1 /etc/rc.local
+chmod 755 /etc/rc.local' > /etc/rc.local
 chmod 755 /etc/rc.local
-systemctl enable rc-local
+#systemctl enable rc-local
 eval echo 'End' $l
