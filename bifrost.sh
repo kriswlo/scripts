@@ -13,16 +13,16 @@ sed -i "s/# groot=LABEL=cloudimg-rootfs/# groot=(hd0)/g" /boot/grub/menu.lst
 eval update-grub-legacy-ec2 $l
 export DEBIAN_FRONTEND=noninteractive
 export DEBIAN_PRIORITY=critical
-sudo -E apt-get -qy update
-sudo -E apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
-sudo -E apt-get -qy autoclean
-eval echo '#!/bin/bash $l
+eval apt-get -qy update $l
+eval apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade $l
+eval apt-get -qy autoclean $l
+eval echo '#!/bin/bash
 touch /root/rc.firewall
 sudo -E apt-get -qy update
 apt upgrade -y
 sudo -E apt-get -qy autoclean
 apt install python-pip -y
-pip install -U pip ansible bifrost' > /etc/rc.local
+pip install -U pip ansible bifrost' > /etc/rc.local $l
 chmod 755 /etc/rc.local
 systemctl enable rc-local
 eval echo 'End' $l
