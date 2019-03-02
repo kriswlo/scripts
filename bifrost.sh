@@ -44,4 +44,4 @@ chmod 755 /etc/rc.local' > /etc/rc.local
 chmod 755 /etc/rc.local
 systemctl enable rc-local
 eval echo 'End' $l
-eval /sbin/reboot $l
+eval systemctl reboot $l
