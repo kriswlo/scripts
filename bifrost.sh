@@ -41,5 +41,6 @@ head -n 2 /etc/rc.local >/etc/rc.local1
 mv /etc/rc.local1 /etc/rc.local
 chmod 755 /etc/rc.local' > /etc/rc.local
 chmod 755 /etc/rc.local
-#systemctl enable rc-local
+systemctl enable rc-local
 eval echo 'End' $l
+reboot
