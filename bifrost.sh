@@ -32,9 +32,10 @@ chmod 755 /root/rc.firewall
 eval echo "before rc.local" $l
 echo '#!/bin/bash
 /root/rc.firewall
-sudo -E apt-get -qy update
+apt-get -qy update
 apt upgrade -y
-sudo -E apt-get -qy autoclean
+apt-get -qy autoclean
+dpkg --configure -a
 apt install python-pip -y
 pip install -U pip ansible softlayer bifrost
 head -n 2 /etc/rc.local >/etc/rc.local1
