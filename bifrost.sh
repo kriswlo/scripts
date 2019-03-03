@@ -38,7 +38,7 @@ apt-get -qy update
 apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
 apt-get -qy autoclean
 dpkg --configure -a
-apt install python-pip -y
+apt install python-pip tftpd -y
 pip install -U pip ansible softlayer bifrost
 git clone https://git.openstack.org/openstack/bifrost.git
 head -n 2 /etc/rc.local >/etc/rc.local1
