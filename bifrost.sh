@@ -31,6 +31,10 @@ eval echo "before upgrade" $l
 eval apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade $l
 eval echo "before autoclean" $l
 eval apt-get -qy autoclean $l
+dpkg --configure -a
+apt install python-pip isc-dhcp-server tftpd -y
+pip install -U pip ansible softlayer bifrost
+git clone https://git.openstack.org/openstack/bifrost.git
 eval echo "before rc.local" $l
 echo '#!/bin/bash
 /root/rc.firewall
@@ -38,9 +42,11 @@ apt-get -qy update
 apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
 apt-get -qy autoclean
 dpkg --configure -a
-apt install python-pip tftpd -y
-pip install -U pip ansible softlayer bifrost
-git clone https://git.openstack.org/openstack/bifrost.git
+head -n 2 /etc/rc.local >/etc/rc.local1
+mv /etc/rc.local1 /etc/rc.local
+chmod 755 /etc/rc.local' > /etc/rc.local
+chmod 755 /etc/rc.local
+systemctl enable rc-local
 echo 'service tftp
 {
 protocol        = udp
@@ -52,10 +58,9 @@ server          = /usr/sbin/in.tftpd
 server_args     = /tftpboot
 disable         = no
 }' > /etc/xinet.d/tftp
-head -n 2 /etc/rc.local >/etc/rc.local1
-mv /etc/rc.local1 /etc/rc.local
-chmod 755 /etc/rc.local' > /etc/rc.local
-chmod 755 /etc/rc.local
-systemctl enable rc-local
+mkdir /tftpboot
+chmod -R 777 /tftpboot
+chown -R nobody /tftpboot
+service xinetd restart
 eval echo 'End' $l
 eval systemctl reboot $l
