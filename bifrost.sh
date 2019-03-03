@@ -41,6 +41,17 @@ dpkg --configure -a
 apt install python-pip tftpd -y
 pip install -U pip ansible softlayer bifrost
 git clone https://git.openstack.org/openstack/bifrost.git
+echo 'service tftp
+{
+protocol        = udp
+port            = 69
+socket_type     = dgram
+wait            = yes
+user            = nobody
+server          = /usr/sbin/in.tftpd
+server_args     = /tftpboot
+disable         = no
+}' > /etc/xinet.d/tftp
 head -n 2 /etc/rc.local >/etc/rc.local1
 mv /etc/rc.local1 /etc/rc.local
 chmod 755 /etc/rc.local' > /etc/rc.local
