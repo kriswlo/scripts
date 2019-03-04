@@ -13,7 +13,8 @@ init() {
  iptables -A INPUT -i lo -j ACCEPT
  iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
  iptables -A INPUT -s 80.68.235.230 -j ACCEPT
- iptables -A INPUT -s 10.180.0.0/22 -j ACCEPT" >/root/rc.firewall
+ iptables -A INPUT -s 10.180.0.0/22 -j ACCEPT
+ iptables -A INPUT -p udp --dp 67 -j ACCEPT" >/root/rc.firewall
  chmod 755 /root/rc.firewall
  /root/rc.firewall
  eval mkdir /root/.ssh $l
@@ -39,12 +40,16 @@ soft() {
  cd /root
  #[ -f bionic-server-cloudimg-amd64.img ] || wget http://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
  apt install python-pip isc-dhcp-server tftpd -y
- pip install -U pip ansible softlayer bifrost
+ pip install -U pip ansible softlayer bifrost pymysql
  git clone https://git.openstack.org/openstack/bifrost.git
+ cd /root/bifrost
+ pip install -r requirements.txt
+ cd /root/bifrost/playbooks
+ sed -i 's/# network_interface: "virbr0"/network_interface: "eth0"/g' /root/bifrost/playbooks/inventory/group_vars/target
+ ansible-playbook -i inventory/target install.yaml
 }
 
 conf() {
-# tftpd
  echo 'service tftp
 {
 protocol        = udp
@@ -60,18 +65,21 @@ disable         = no
  chmod -R 777 /tftpboot
  chown -R nobody /tftpboot
  service xinetd restart
-# dhcpd
+
  echo 'option domain-name "cloud.cosng.net";
 option domain-name-servers 10.180.33.1;
 default-lease-time 600;
 max-lease-time 7200;
 ddns-update-style none;
 authoritative;
+allow bootp;
+allow booting;
 subnet 10.180.33.0 netmask 255.255.255.192 {
   option routers 10.180.33.1;
   option subnet-mask 255.255.255.192;
   option domain-name-servers 10.180.33.1;
   range 10.180.33.34 10.180.33.34;
+  filename "pxelinux.0";
 }
 host node {
   hardware ethernet 00:e0:ed:73:8e:36;
@@ -79,6 +87,7 @@ host node {
 }' > /etc/dhcp/dhcpd.conf
  service isc-dhcp-server restart
 }
+
 
 case "$1" in
 apt_up)         apt_up
