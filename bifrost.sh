@@ -33,7 +33,7 @@ apt_up() {
  apt-get -qy autoclean
  dpkg --configure -a
  apt upgrade -y
- apt dist-upgrade -y
+ #apt dist-upgrade -y
 }
 
 soft() {
