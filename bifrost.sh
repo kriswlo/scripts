@@ -12,6 +12,7 @@ init() {
  iptables -P INPUT DROP
  iptables -A INPUT -i lo -j ACCEPT
  iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+ iptables -A INPUT -s 195.212.29.0/24 -j ACCEPT
  iptables -A INPUT -s 80.68.235.230 -j ACCEPT
  iptables -A INPUT -s 10.180.0.0/22 -j ACCEPT
  iptables -A INPUT -i eth0 -p udp --dp 67 -j ACCEPT
