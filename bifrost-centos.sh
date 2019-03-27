@@ -11,7 +11,7 @@ eval chmod 600 /root/.ssh $l
 eval chmod 400 /root/.ssh/authorized_keys $l
 yum install vim git python-setuptools epel-release -y
 easy_install pip
-pip install ansible
+pip install -U pip ansible
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
 pip install -r requirements.txt
