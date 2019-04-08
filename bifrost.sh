@@ -54,9 +54,6 @@ soft() {
  ansible-playbook -i inventory/target install.yaml
 }
 
-conf() {
-}
-
 
 case "$1" in
 apt_up)         apt_up
@@ -66,9 +63,8 @@ soft)       	soft
 conf)       	conf
                 ;;
 *)              init
-#                apt_up
-#                soft
-#                conf
+                apt_up
+                soft
                 ;;
 esac
 
