@@ -25,5 +25,6 @@ done
 # jessie no longer available there
 sed -i 's/dib_os_release: "jessie"/dib_os_release: "stretch"/g' /root/bifrost/playbooks/roles/bifrost-create-dib-image/tasks/main.yml
 # adjust dhcp pool
-eval DEBIAN_FRONTEND=noninteractive apt remove resolvconf -qy $l
+#eval DEBIAN_FRONTEND=noninteractive apt remove resolvconf -qy $l
+eval dpkg -r --force-depends resolvconf $l
 ansible-playbook -i inventory/target install.yaml -e "dhcp_pool_start=10.180.112.92 dhcp_pool_end=10.180.112.92" > /root/bifrost_install.txt 2>&1
