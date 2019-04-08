@@ -64,8 +64,8 @@ soft)       	soft
 conf)       	conf
                 ;;
 *)              init
-                apt_up
-                soft
+#                apt_up
+#                soft
                 ;;
 esac
 
