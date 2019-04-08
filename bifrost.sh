@@ -31,7 +31,7 @@ apt_up() {
  export DEBIAN_FRONTEND=noninteractive
  export DEBIAN_PRIORITY=critical
  apt-get -qy update
- apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+ apt-get --force-yes -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
  apt-get -qy autoclean
  dpkg --configure -a
  apt upgrade -y
@@ -42,6 +42,7 @@ soft() {
  cd /root
  #[ -f bionic-server-cloudimg-amd64.img ] || wget http://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
  apt install python-pip -y
+ pip install ansible
  git clone https://git.openstack.org/openstack/bifrost.git
  cd /root/bifrost
  bash ./scripts/env-setup.sh
