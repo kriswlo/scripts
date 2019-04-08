@@ -11,7 +11,7 @@ eval chmod 600 /root/.ssh $l
 eval chmod 400 /root/.ssh/authorized_keys $l
 eval apt update $l
 eval apt install python-pip make -y $l
-eval pip install -U pip ansible -y $l
+eval pip install ansible $l
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
 bash ./scripts/env-setup.sh
