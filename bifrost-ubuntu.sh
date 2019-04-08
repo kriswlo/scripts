@@ -13,14 +13,15 @@ apt install python-pip
 pip install -U pip ansible
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
-pip install -r requirements.txt
+bash ./scripts/env-setup.sh
+export PATH=${HOME}/.local/bin:${PATH}
 cd /root/bifrost/playbooks
 # adjust interfaces!
-sed -i 's/# network_interface: "virbr0"/network_interface: "eth0"/g' /root/bifrost/playbooks/inventory/group_vars/target
-sed -i 's/# network_interface: "virbr0"/network_interface: "eth0"/g' /root/bifrost/playbooks/inventory/group_vars/localhost
-sed -i 's/# network_interface: "virbr0"/network_interface: "eth0"/g' /root/bifrost/playbooks/inventory/group_vars/baremetal
+for i in baremetal  localhost  target
+  do
+   sed -i 's/# network_interface: "virbr0"/network_interface: "eth0"/g' /root/bifrost/playbooks/inventory/group_vars/$i
+done
 # jessie no longer available there
 sed -i 's/dib_os_release: "jessie"/dib_os_release: "stretch"/g' /root/bifrost/playbooks/roles/bifrost-create-dib-image/tasks/main.yml
-
+# adjust dhcp pool
 ansible-playbook -i inventory/target install.yaml -e 'dhcp_pool_start=10.180.112.92 dhcp_pool_end=10.180.112.92"
-  
