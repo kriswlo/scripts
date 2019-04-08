@@ -18,7 +18,7 @@ apt_up() {
  export DEBIAN_FRONTEND=noninteractive
  export DEBIAN_PRIORITY=critical
  apt-get -qy update
- apt-get --force-yes -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+ DEBIAN_FRONTEND=noninteractive apt-get --force-yes -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade -qy
  apt-get -qy autoclean
  dpkg --configure -a
  apt upgrade -y
