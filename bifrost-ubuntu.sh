@@ -10,7 +10,7 @@ eval "echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9Rv7mjUkhhKAXp/FORWCLoKtr3Wkp
 eval chmod 600 /root/.ssh $l
 eval chmod 400 /root/.ssh/authorized_keys $l
 eval apt update $l
-eval apt install python-pip make -y $l
+eval DEBIAN_FRONTEND=noninteractive apt install python-pip make mysql-server -y $l
 eval pip install ansible $l
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
@@ -28,6 +28,5 @@ sed -i 's/dib_os_release: "jessie"/dib_os_release: "stretch"/g' /root/bifrost/pl
 #eval DEBIAN_FRONTEND=noninteractive apt remove resolvconf -qy $l
 #eval dpkg -r --force-depends resolvconf $l
 systemctl stop resolvconf
-eval DEBIAN_FRONTEND=noninteractive apt install mysql-server -qy $l
-eval dpkg --configure -a $l
+#eval dpkg --configure -a $l
 ansible-playbook -i inventory/target install.yaml -e "dhcp_pool_start=10.180.112.92 dhcp_pool_end=10.180.112.92" > /root/bifrost_install.txt 2>&1
