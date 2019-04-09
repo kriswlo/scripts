@@ -28,4 +28,5 @@ sed -i 's/dib_os_release: "jessie"/dib_os_release: "stretch"/g' /root/bifrost/pl
 #eval DEBIAN_FRONTEND=noninteractive apt remove resolvconf -qy $l
 #eval dpkg -r --force-depends resolvconf $l
 systemctl stop resolvconf
+dpkg --configure -a
 ansible-playbook -i inventory/target install.yaml -e "dhcp_pool_start=10.180.112.92 dhcp_pool_end=10.180.112.92" > /root/bifrost_install.txt 2>&1
