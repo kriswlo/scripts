@@ -11,6 +11,7 @@ eval chmod 600 /root/.ssh $l
 eval chmod 400 /root/.ssh/authorized_keys $l
 export DEBIAN_FRONTEND=noninteractive
 export DEBIAN_PRIORITY=critical
+export DEBCONF_NONINTERACTIVE_SEEN=true
 eval apt-get -qy update $l
 eval apt-get --force-yes -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install python-pip make mysql-server -qy $l
 eval apt-get -qy autoclean $l
