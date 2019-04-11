@@ -16,6 +16,8 @@ export RUNLEVEL=1
 eval apt-get -qy update $l
 eval apt-get --force-yes -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install python-pip make mysql-server -qy $l
 eval apt-get -qy autoclean $l
+sleep 5
+eval "echo after apt" $l
 eval pip install ansible $l
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
