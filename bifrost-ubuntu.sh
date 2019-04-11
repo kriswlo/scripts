@@ -19,7 +19,7 @@ eval apt-get -qy autoclean $l
 sleep 5
 eval "echo after apt" $l
 eval which pip $l
-bash -c "/usr/bin/pip -vvv install ansible"
+strace /usr/bin/pip -vvv install ansible > /root/post_install.txt 2>&1
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
 bash ./scripts/env-setup.sh
