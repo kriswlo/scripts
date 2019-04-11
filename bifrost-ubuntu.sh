@@ -17,10 +17,10 @@ eval apt-get -y update $l
 #eval apt-get --force-yes -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install python-pip make mysql-server ansible -qy $l
 eval apt-get -y install make mysql-server ansible $l
 #eval apt-get -qy autoclean $l
-eval easy_install pip $l
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
-eval bash ./scripts/env-setup.sh $l
+eval RUNLEVEL=1 dpkg --configure -a $l
+eval RUNLEVEL=1 scripts/env-setup.sh $l
 export PATH=${HOME}/.local/bin:${PATH}
 cd /root/bifrost/playbooks
 # adjust interfaces!
@@ -31,8 +31,5 @@ done
 # jessie no longer available there
 sed -i 's/dib_os_release: "jessie"/dib_os_release: "stretch"/g' /root/bifrost/playbooks/roles/bifrost-create-dib-image/tasks/main.yml
 # adjust dhcp pool
-#eval DEBIAN_FRONTEND=noninteractive apt remove resolvconf -qy $l
-#eval dpkg -r --force-depends resolvconf $l
 systemctl stop resolvconf
-#eval dpkg --configure -a $l
 ansible-playbook -i inventory/target install.yaml -e "dhcp_pool_start=10.180.112.92 dhcp_pool_end=10.180.112.92" > /root/bifrost_install.txt 2>&1
