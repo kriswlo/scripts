@@ -15,8 +15,9 @@ export DEBCONF_NONINTERACTIVE_SEEN=true
 export RUNLEVEL=1
 eval apt-get -y update $l
 #eval apt-get --force-yes -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install python-pip make mysql-server ansible -qy $l
-eval apt-get -y install python-pip make mysql-server ansible $l
+eval apt-get -y install make mysql-server ansible $l
 #eval apt-get -qy autoclean $l
+eval easy_install pip $l
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
 bash ./scripts/env-setup.sh
