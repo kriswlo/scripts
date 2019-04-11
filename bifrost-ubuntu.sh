@@ -18,7 +18,7 @@ eval apt-get --force-yes -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options:
 eval apt-get -qy autoclean $l
 sleep 5
 eval "echo after apt" $l
-eval pip install ansible $l
+eval pip -vvv install ansible $l
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
 bash ./scripts/env-setup.sh
