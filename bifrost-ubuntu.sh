@@ -20,7 +20,7 @@ eval apt-get -y install make mysql-server ansible $l
 eval easy_install pip $l
 git clone https://git.openstack.org/openstack/bifrost.git
 cd /root/bifrost
-bash ./scripts/env-setup.sh
+eval bash ./scripts/env-setup.sh $l
 export PATH=${HOME}/.local/bin:${PATH}
 cd /root/bifrost/playbooks
 # adjust interfaces!
