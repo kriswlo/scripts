@@ -14,7 +14,6 @@ export DEBIAN_PRIORITY=critical
 export DEBCONF_NONINTERACTIVE_SEEN=true
 export RUNLEVEL=1
 eval apt-get -y update $l
-#eval apt-get --force-yes -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install python-pip make mysql-server ansible -qy $l
 eval apt-get -y install make mysql-server ansible $l
 eval apt-get -y autoclean $l
 git clone https://git.openstack.org/openstack/bifrost.git
@@ -26,7 +25,6 @@ for i in baremetal  localhost  target
 done
 # jessie no longer available there
 sed -i 's/dib_os_release: "jessie"/dib_os_release: "stretch"/g' /root/bifrost/playbooks/roles/bifrost-create-dib-image/tasks/main.yml
-
 echo '#!/bin/bash
 cd /root/bifrost
 bash ./scripts/env-setup.sh > /root/rc.local.txt 2>&1
