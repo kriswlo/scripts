@@ -33,7 +33,7 @@ export PATH=${HOME}/.local/bin:${PATH}
 cd /root/bifrost/playbooks
 # adjust dhcp pool
 systemctl stop resolvconf
-ansible-playbook -i inventory/target install.yaml -e "dhcp_pool_start=10.180.112.92 dhcp_pool_end=10.180.112.92" > /root/bifrost_install.txt 2>&1
+/root/.local/bin/ansible-playbook -i inventory/target install.yaml -e "dhcp_pool_start=10.180.112.92 dhcp_pool_end=10.180.112.92" > /root/bifrost_install.txt 2>&1
 mv /etc/rc.local /etc/rc.local.bak
 ' > /etc/rc.local
 chomod +x /etc/rc.local
