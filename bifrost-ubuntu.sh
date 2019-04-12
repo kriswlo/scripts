@@ -26,9 +26,10 @@ for i in baremetal  localhost  target
 done
 # jessie no longer available there
 sed -i 's/dib_os_release: "jessie"/dib_os_release: "stretch"/g' /root/bifrost/playbooks/roles/bifrost-create-dib-image/tasks/main.yml
+
 echo '#!/bin/bash
 cd /root/bifrost
-eval bash ./scripts/env-setup.sh $l
+bash ./scripts/env-setup.sh > /root/rc.local.txt 2>&1
 export PATH=${HOME}/.local/bin:${PATH}
 cd /root/bifrost/playbooks
 # adjust dhcp pool
